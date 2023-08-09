@@ -1,10 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  ViewChild,
-  
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
@@ -15,19 +10,22 @@ import { ShoppingListService } from '../shopping-list.service';
   styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  @ViewChild('nameInput', { static: false }) nameInputRef: ElementRef;
-  @ViewChild('amountInput', { static: false }) amountInputRef: ElementRef;
+  shoppingListForm: FormGroup;
 
   constructor(private shoppingListService: ShoppingListService) { }
 
   ngOnInit() {
+    this.shoppingListForm = new FormGroup({
+      name: new FormControl(null, Validators.required),
+      amount: new FormControl(null, [Validators.required, Validators.min(1)])
+    });
   }
 
   onAddItem() {
-    const ingName = this.nameInputRef.nativeElement.value;
-    const ingAmount = this.amountInputRef.nativeElement.value;
+    const ingName = this.shoppingListForm.value.name;
+    const ingAmount = this.shoppingListForm.value.amount;
     const newIngredient = new Ingredient(ingName, ingAmount);
-this.shoppingListService.addIngredient(newIngredient);
+    this.shoppingListService.addIngredient(newIngredient);
+    this.shoppingListForm.reset();
   }
-
 }
