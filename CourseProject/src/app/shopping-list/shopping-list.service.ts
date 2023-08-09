@@ -18,6 +18,10 @@ export class ShoppingListService {
     // to change the array directly and not the copy we can just remove .slice()
   }
 
+  getIngrediant(index: number){
+    return this.ingredients[index];
+  }
+
   addIngredient(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
       // this is another approch to change the copy of the array
