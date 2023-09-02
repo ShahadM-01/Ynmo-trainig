@@ -1,11 +1,7 @@
-import { EventEmitter } from '@angular/core';
-
 import { Ingredient } from '../shared/ingredient.model';
 import { Subject } from 'rxjs';
 
-
 export class ShoppingListService {
-  // ingredientsChanged = new EventEmitter<Ingredient[]>();
   ingredientsChanged = new Subject<Ingredient[]>();
   startedEditing = new Subject<number>();
   private ingredients: Ingredient[] = [
@@ -15,16 +11,14 @@ export class ShoppingListService {
 
   getIngredients() {
     return this.ingredients.slice();
-    // to change the array directly and not the copy we can just remove .slice()
   }
 
-  getIngrediant(index: number) {
+  getIngredient(index: number) {
     return this.ingredients[index];
   }
 
   addIngredient(ingredient: Ingredient) {
     this.ingredients.push(ingredient);
-    // this is another approch to change the copy of the array
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 
@@ -36,11 +30,12 @@ export class ShoppingListService {
     this.ingredientsChanged.next(this.ingredients.slice());
   }
 
-  updateIngrediant(index: number, newIngredient: Ingredient) {
+  updateIngredient(index: number, newIngredient: Ingredient) {
     this.ingredients[index] = newIngredient;
     this.ingredientsChanged.next(this.ingredients.slice());
   }
-  deleteIngrediant(index: number) {
+
+  deleteIngredient(index: number) {
     this.ingredients.splice(index, 1);
     this.ingredientsChanged.next(this.ingredients.slice());
   }
